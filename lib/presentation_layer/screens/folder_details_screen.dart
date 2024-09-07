@@ -78,7 +78,7 @@ class FolderDetailScreen extends StatelessWidget {
                         trailing: IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
-                            context.read<FolderBloc>().add(DeleteNoteFromFolder(folder.id, index));
+                            _showDeleteConfirmationDialog(context, folder.id, index); // Show confirmation dialog
                           },
                         ),
                         onTap: () {
@@ -102,9 +102,17 @@ class FolderDetailScreen extends StatelessWidget {
               }
             },
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => _showAddNoteDialog(context),
-            child: const Icon(Icons.add),
+          floatingActionButton: Container(
+            decoration: BoxDecoration(
+              border: Border.all(width: 1,color: Colors.white),
+              borderRadius: BorderRadius.circular(15)
+                  
+            ),
+            child: FloatingActionButton(
+              backgroundColor: Color(0x99dc718c),
+              onPressed: () => _showAddNoteDialog(context),
+              child: const Icon(Icons.add),
+            ),
           ),
         ),
       ],
@@ -206,6 +214,33 @@ class FolderDetailScreen extends StatelessWidget {
               ],
             );
           },
+        );
+      },
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, String folderId, int noteIndex) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Note'),
+          content: const Text('Are you sure you want to delete this note?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog without doing anything
+              },
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<FolderBloc>().add(DeleteNoteFromFolder(folderId, noteIndex)); // Confirm deletion
+                Navigator.of(context).pop(); // Close the dialog after deleting
+              },
+              child: const Text('Yes'),
+            ),
+          ],
         );
       },
     );

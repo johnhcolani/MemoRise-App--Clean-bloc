@@ -41,6 +41,9 @@ dependencies:
   path_provider:
   flutter_quill:
   quill_html_editor:
+  url_launcher: ^6.3.0
+  device_info_plus:
+  flutter_keyboard_visibility:
 
 dev_dependencies:
   flutter_test:

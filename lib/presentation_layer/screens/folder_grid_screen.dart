@@ -15,10 +15,13 @@ class FolderGridScreen extends StatefulWidget {
 }
 
 class _FolderGridScreenState extends State<FolderGridScreen> {
-  Color selectedColor = Colors.blue.withOpacity(0.5);
+  Color selectedColor = Color(0x99dc718c);
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+
+    double width = MediaQuery.of(context).size.width;
     return Stack(
       children: [
         Container(
@@ -37,9 +40,12 @@ class _FolderGridScreenState extends State<FolderGridScreen> {
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
-            title: const Text(
-              'Dream Notes',
-              style: TextStyle(color: Colors.white),
+            title:  Text(
+              'MemoRise',
+              style: TextStyle(
+                  color: Colors.white,
+              fontSize: width >500 ? 38 : 22
+              ),
             ),
           ),
           body: BlocBuilder<FolderBloc, FolderState>(
@@ -49,8 +55,8 @@ class _FolderGridScreenState extends State<FolderGridScreen> {
               } else if (state is FolderLoaded) {
                 return GridView.builder(
                   padding: const EdgeInsets.all(10),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: width >500 ? 3 : 2,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                   ),
@@ -95,16 +101,17 @@ class _FolderGridScreenState extends State<FolderGridScreen> {
                                     Expanded(
                                       child: Text(
                                         folder.name,
-                                        style: const TextStyle(
+                                        style:  TextStyle(
                                           color: Colors.white,
-                                          fontSize: 16,
+                                          fontSize: width >500 ? 32 :14,
                                           fontWeight: FontWeight.bold,
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                     IconButton(
-                                      icon: const Icon(Icons.delete,
+                                      icon:  Icon(Icons.delete,
+                                          size: width >500 ? 38 :14,
                                           color: Colors.white),
                                       onPressed: () {
                                         _confirmDeleteFolder(context, folder);
@@ -133,8 +140,9 @@ class _FolderGridScreenState extends State<FolderGridScreen> {
                                                 padding: const EdgeInsets.all(8.0),
                                                 child: Text(
                                                   note.title,
-                                                  style: const TextStyle(
-                                                      color: Colors.white, fontSize: 12),
+                                                  style:  TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: width >500 ? 28 :14,),
                                                   overflow: TextOverflow.ellipsis,
                                                   maxLines: 1,
                                                 ),
@@ -165,15 +173,16 @@ class _FolderGridScreenState extends State<FolderGridScreen> {
           floatingActionButton: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                 Text(
                   'Click on ✚ to add your Note',
                   style: TextStyle(
-                      fontSize: 18,
+                      fontSize:  width >500 ?32 : 18,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                 ),
+                const SizedBox(width: 16,),
                 Container(
                   width: 56.0,
                   height: 56.0,
@@ -253,7 +262,7 @@ class _FolderGridScreenState extends State<FolderGridScreen> {
                   Row(
                     children: [
                       Text('Folder Color',style: TextStyle(color: selectedColor),),
-                      Divider(indent: 16,),
+                      const Divider(indent: 16,),
                       DropdownButton<Color>(
                         value: selectedColor,
                         items: <Color>[
@@ -313,4 +322,4 @@ class _FolderGridScreenState extends State<FolderGridScreen> {
     );
   }
 }
-//backgroundColor: const Color(0xFF599F8F),
+
