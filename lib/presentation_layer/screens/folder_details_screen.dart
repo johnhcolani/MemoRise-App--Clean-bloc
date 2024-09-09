@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data_layer/models/folder.dart';
 import '../../data_layer/models/note.dart';
-import '../bloc/folder_bloc.dart';
-import '../bloc/folder_event.dart';
-import '../bloc/folder_state.dart';
+import '../bloc/folder_bloc/folder_bloc.dart';
+import '../bloc/folder_bloc/folder_event.dart';
+import '../bloc/folder_bloc/folder_state.dart';
 import 'note_details_screen.dart';
 
 class FolderDetailScreen extends StatelessWidget {
@@ -28,90 +28,95 @@ class FolderDetailScreen extends StatelessWidget {
             ),
           ),
         ),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.transparent, // Make app bar background transparent
-            title: BlocBuilder<FolderBloc, FolderState>(
+        GestureDetector(
+          onTap: (){
+            FocusScope.of(context).unfocus();
+          },
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.transparent, // Make app bar background transparent
+              title: BlocBuilder<FolderBloc, FolderState>(
+                builder: (context, state) {
+                  if (state is FolderLoaded) {
+                    final currentFolder = state.folders.firstWhere(
+                          (f) => f.id == folder.id,
+                      orElse: () => folder,
+                    );
+                    return Text(currentFolder.name, style: const TextStyle(color: Colors.white)); // Update title to current folder name
+                  }
+                  return Text(folder.name);
+                },
+              ),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.edit, color: Colors.white), // Edit icon to rename folder
+                  onPressed: () => _showEditFolderNameDialog(context),
+                ),
+              ],
+            ),
+            body: BlocBuilder<FolderBloc, FolderState>(
               builder: (context, state) {
                 if (state is FolderLoaded) {
                   final currentFolder = state.folders.firstWhere(
                         (f) => f.id == folder.id,
                     orElse: () => folder,
                   );
-                  return Text(currentFolder.name, style: const TextStyle(color: Colors.white)); // Update title to current folder name
-                }
-                return Text(folder.name);
-              },
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.edit, color: Colors.white), // Edit icon to rename folder
-                onPressed: () => _showEditFolderNameDialog(context),
-              ),
-            ],
-          ),
-          body: BlocBuilder<FolderBloc, FolderState>(
-            builder: (context, state) {
-              if (state is FolderLoaded) {
-                final currentFolder = state.folders.firstWhere(
-                      (f) => f.id == folder.id,
-                  orElse: () => folder,
-                );
 
-                return ListView.builder(
-                  padding: const EdgeInsets.all(10),
-                  itemCount: currentFolder.notes.length,
-                  itemBuilder: (context, index) {
-                    final note = currentFolder.notes[index];
-                    return Card(
-                      elevation: 2,
-                      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                      child: ListTile(
-                        title: Text(note.title, style: const TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Text(
-                          note.description,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis, // Limit description to one line
-                        ),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete, color: Colors.red),
-                          onPressed: () {
-                            _showDeleteConfirmationDialog(context, folder.id, index); // Show confirmation dialog
+                  return ListView.builder(
+                    padding: const EdgeInsets.all(10),
+                    itemCount: currentFolder.notes.length,
+                    itemBuilder: (context, index) {
+                      final note = currentFolder.notes[index];
+                      return Card(
+                        elevation: 2,
+                        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                        child: ListTile(
+                          title: Text(note.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                          subtitle: Text(
+                            note.description,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis, // Limit description to one line
+                          ),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () {
+                              _showDeleteConfirmationDialog(context, folder.id, index); // Show confirmation dialog
+                            },
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NoteDetailScreen(
+                                  folder: folder,
+                                  noteIndex: index,
+                                  note: note,
+                                ),
+                              ),
+                            );
                           },
                         ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NoteDetailScreen(
-                                folder: folder,
-                                noteIndex: index,
-                                note: note,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                );
-              } else {
-                return const Center(child: Text('No notes available.'));
-              }
-            },
-          ),
-          floatingActionButton: Container(
-            decoration: BoxDecoration(
-              border: Border.all(width: 1,color: Colors.white),
-              borderRadius: BorderRadius.circular(15)
-                  
+                      );
+                    },
+                  );
+                } else {
+                  return const Center(child: Text('No notes available.'));
+                }
+              },
             ),
-            child: FloatingActionButton(
-              backgroundColor: Color(0x99dc718c),
-              onPressed: () => _showAddNoteDialog(context),
-              child: const Icon(Icons.add),
+            floatingActionButton: Container(
+              decoration: BoxDecoration(
+                border: Border.all(width: 1,color: Colors.white),
+                borderRadius: BorderRadius.circular(15)
+
+              ),
+              child: FloatingActionButton(
+                backgroundColor: const Color(0x99dc718c),
+                onPressed: () => _showAddNoteDialog(context),
+                child: const Icon(Icons.add),
+              ),
             ),
           ),
         ),
@@ -130,22 +135,24 @@ class FolderDetailScreen extends StatelessWidget {
           builder: (context, setState) {
             return AlertDialog(
               title: const Text('Add New Note'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    decoration: const InputDecoration(labelText: 'Note Title'),
-                    onChanged: (value) {
-                      title = value;
-                    },
-                  ),
-                  TextField(
-                    decoration: const InputDecoration(labelText: 'Note Description'),
-                    onChanged: (value) {
-                      description = value;
-                    },
-                  ),
-                ],
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      decoration: const InputDecoration(labelText: 'Note Title'),
+                      onChanged: (value) {
+                        title = value;
+                      },
+                    ),
+                    TextField(
+                      decoration: const InputDecoration(labelText: 'Note Description'),
+                      onChanged: (value) {
+                        description = value;
+                      },
+                    ),
+                  ],
+                ),
               ),
               actions: [
                 TextButton(

@@ -1,6 +1,6 @@
 // lib/folder_event.dart
-import '../../data_layer/models/folder.dart';
-import '../../data_layer/models/note.dart';
+import '../../../data_layer/models/folder.dart';
+import '../../../data_layer/models/note.dart';
 
 
 abstract class FolderEvent {}

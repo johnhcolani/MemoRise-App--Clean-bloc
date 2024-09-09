@@ -44,6 +44,8 @@ dependencies:
   url_launcher: ^6.3.0
   device_info_plus:
   flutter_keyboard_visibility:
+  google_sign_in: ^6.2.1
+  equatable:
 
 dev_dependencies:
   flutter_test:

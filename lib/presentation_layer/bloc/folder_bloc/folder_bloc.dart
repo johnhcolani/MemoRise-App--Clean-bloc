@@ -1,7 +1,7 @@
 // lib/folder_bloc.dart
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import '../../data_layer/models/folder.dart';
-import '../../data_layer/models/note.dart';
+import '../../../data_layer/models/folder.dart';
+import '../../../data_layer/models/note.dart';
 import 'folder_event.dart';
 import 'folder_state.dart';
 
