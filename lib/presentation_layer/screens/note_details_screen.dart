@@ -121,7 +121,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                       onTap: () {
                         // Toggle between smaller and larger toolbar heights by changing the percentage
                         setState(() {
-                          _toolbarHeightPercentage = _toolbarHeightPercentage == 0.1 ? 0.5 : 0.1;
+                          _toolbarHeightPercentage = _toolbarHeightPercentage == 0.1 ? 0.3 : 0.1;
                         });
                       },
                       child: AnimatedContainer(
@@ -145,8 +145,12 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
 
                     // Quill Editor
                     Container(
-                      color: Colors.white,
-                      height: screenHeight * 0.68, // Set remaining height for the editor dynamically
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25),bottomRight: Radius.circular(25))
+                      ),
+                      
+                      height: screenHeight * 0.6, // Set remaining height for the editor dynamically
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: QuillEditor.basic(

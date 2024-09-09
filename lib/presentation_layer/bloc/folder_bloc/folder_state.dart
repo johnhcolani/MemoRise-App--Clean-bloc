@@ -13,7 +13,15 @@ class FolderLoaded extends FolderState {
 
   FolderLoaded(this.folders);
 }
+class FolderNoteSaved extends FolderState {
+  final String message;
+  FolderNoteSaved(this.message);
+}
 
+class FolderNotePrinted extends FolderState {
+  final String message;
+  FolderNotePrinted(this.message);
+}
 class FolderError extends FolderState {
   final String message;
 

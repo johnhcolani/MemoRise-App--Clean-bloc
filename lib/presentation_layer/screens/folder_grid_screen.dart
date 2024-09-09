@@ -260,8 +260,14 @@ class _FolderGridScreenState extends State<FolderGridScreen> {
                   children: [
                     TextField(
                       decoration: const InputDecoration(labelText: 'Folder Name'),
+                      textCapitalization: TextCapitalization.words,
                       onChanged: (value) {
-                        name = value;
+                        if (value.isNotEmpty){
+                          name = value[0].toUpperCase() + value.substring(1);
+                        }else{
+                          name = value;
+                        }
+
                       },
                     ),
                     const SizedBox(height: 10),

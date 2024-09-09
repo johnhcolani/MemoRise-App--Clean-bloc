@@ -46,6 +46,9 @@ dependencies:
   flutter_keyboard_visibility:
   google_sign_in: ^6.2.1
   equatable:
+  docx_template:
+  pdf:
+  printing:
 
 dev_dependencies:
   flutter_test:

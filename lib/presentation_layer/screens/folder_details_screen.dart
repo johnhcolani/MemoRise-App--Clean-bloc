@@ -29,7 +29,7 @@ class FolderDetailScreen extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: (){
+          onTap: () {
             FocusScope.of(context).unfocus();
           },
           child: Scaffold(
@@ -44,9 +44,15 @@ class FolderDetailScreen extends StatelessWidget {
                           (f) => f.id == folder.id,
                       orElse: () => folder,
                     );
-                    return Text(currentFolder.name, style: const TextStyle(color: Colors.white)); // Update title to current folder name
+                    return Text(
+                      currentFolder.name, // Display folder name as entered
+                      style: const TextStyle(color: Colors.white),
+                    );
                   }
-                  return Text(folder.name);
+                  return Text(
+                    folder.name, // Default folder name
+                    style: const TextStyle(color: Colors.white),
+                  );
                 },
               ),
               actions: [
@@ -73,7 +79,10 @@ class FolderDetailScreen extends StatelessWidget {
                         elevation: 2,
                         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                         child: ListTile(
-                          title: Text(note.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                          title: Text(
+                            note.title,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           subtitle: Text(
                             note.description,
                             maxLines: 1,
@@ -108,9 +117,8 @@ class FolderDetailScreen extends StatelessWidget {
             ),
             floatingActionButton: Container(
               decoration: BoxDecoration(
-                border: Border.all(width: 1,color: Colors.white),
-                borderRadius: BorderRadius.circular(15)
-
+                border: Border.all(width: 1, color: Colors.white),
+                borderRadius: BorderRadius.circular(15),
               ),
               child: FloatingActionButton(
                 backgroundColor: const Color(0x99dc718c),
@@ -194,6 +202,7 @@ class FolderDetailScreen extends StatelessWidget {
               title: const Text('Edit Folder Name'),
               content: TextField(
                 controller: nameController,
+                textCapitalization: TextCapitalization.none, // Ensure no auto-capitalization
                 decoration: const InputDecoration(labelText: 'New Folder Name'),
               ),
               actions: [
@@ -208,7 +217,7 @@ class FolderDetailScreen extends StatelessWidget {
                     if (nameController.text.isNotEmpty) {
                       final updatedFolder = Folder(
                         id: folder.id,
-                        name: nameController.text, // Updated name
+                        name: nameController.text, // Updated name as entered
                         color: folder.color,
                         notes: folder.notes,
                       );

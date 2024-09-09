@@ -46,3 +46,29 @@ class UpdateFolder extends FolderEvent {
 
   UpdateFolder(this.updatedFolder);
 }
+class SaveNoteAsTextFile extends FolderEvent {
+  final Note note;
+  final String fileName;
+
+  SaveNoteAsTextFile(this.note, this.fileName);
+}
+
+class SaveNoteAsPdf extends FolderEvent {
+  final Note note;
+  final String fileName;
+
+  SaveNoteAsPdf(this.note, this.fileName);
+}
+
+class SaveNoteAsWord extends FolderEvent {
+  final Note note;
+  final String fileName;
+
+  SaveNoteAsWord(this.note, this.fileName);
+}
+
+class PrintNote extends FolderEvent {
+  final Note note;
+
+  PrintNote(this.note);
+}
