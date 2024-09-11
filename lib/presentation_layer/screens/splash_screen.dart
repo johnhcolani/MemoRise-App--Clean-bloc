@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_for_everybody/presentation_layer/screens/folder_grid_screen.dart';
 
-import '../bloc/splash_bloc.dart';
+import '../bloc/splash_bloc/splash_bloc.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

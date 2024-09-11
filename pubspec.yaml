@@ -49,6 +49,7 @@ dependencies:
   docx_template:
   pdf:
   printing:
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

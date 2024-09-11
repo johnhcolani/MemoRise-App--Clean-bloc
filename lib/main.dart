@@ -2,11 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:notes_for_everybody/presentation_layer/bloc/background_image_bloc/background_image_bloc.dart';
 import 'package:notes_for_everybody/presentation_layer/bloc/folder_bloc/folder_bloc.dart';
-import 'package:notes_for_everybody/presentation_layer/bloc/splash_bloc.dart';
+import 'package:notes_for_everybody/presentation_layer/bloc/splash_bloc/splash_bloc.dart';
+import 'package:notes_for_everybody/presentation_layer/bloc/theme_bloc/theme_bloc.dart';
 import 'package:notes_for_everybody/presentation_layer/screens/splash_screen.dart';
 import 'package:path_provider/path_provider.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,13 +31,25 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => FolderBloc(),
         ),
-        BlocProvider(create: (_)=> SplashBloc()),
+        BlocProvider(
+          create: (_) => SplashBloc(),
+        ),
+        BlocProvider(
+          create: (_) => ThemeBloc(),
+        ),
+        BlocProvider(
+          create: (context) => BackgroundImageBloc(),
+        ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Folder Manager',
-        theme: ThemeData(primarySwatch: Colors.blue),
-        home:  const SplashScreen(),
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Folder Manager',
+            theme: state.themeData, // Use the current theme from ThemeBloc
+            home: const SplashScreen(),
+          );
+        },
       ),
     );
   }
