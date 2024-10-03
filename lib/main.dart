@@ -42,11 +42,11 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(
-        builder: (context, state) {
+        builder: (context, themeState) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Folder Manager',
-            theme: state.themeData, // Use the current theme from ThemeBloc
+            title: 'MemoRise',
+            theme: themeState is LightThemeState ? _lightTheme : _darkTheme, // Use the current theme from ThemeBloc
             home: const SplashScreen(),
           );
         },
@@ -54,3 +54,40 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+// Define your light theme data
+final ThemeData _lightTheme = ThemeData(
+  brightness: Brightness.light,
+  primaryColor: const Color(0x7511433E),
+  scaffoldBackgroundColor: Colors.white,
+  appBarTheme: const AppBarTheme(
+    backgroundColor: const Color(0x7511433E), // AppBar background color for light theme
+    iconTheme: IconThemeData(color: Colors.white),
+    titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+  ),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: const Color(0x7511433E),
+  ),
+  buttonTheme: ButtonThemeData(
+    buttonColor: const Color(0x7511433E),
+    textTheme: ButtonTextTheme.primary,
+  ),
+);
+
+// Define your dark theme data
+final ThemeData _darkTheme = ThemeData(
+  brightness: Brightness.dark,
+  primarySwatch: Colors.orange,
+  scaffoldBackgroundColor: Colors.grey,
+  appBarTheme: AppBarTheme(
+    color: Color(0x35010E0D), // AppBar background color for dark theme
+    iconTheme: IconThemeData(color: Colors.orange),
+    titleTextStyle: TextStyle(color: Colors.orange, fontSize: 20),
+  ),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: Colors.orange,
+  ),
+  buttonTheme: ButtonThemeData(
+    buttonColor: Colors.orange,
+    textTheme: ButtonTextTheme.primary,
+  ),
+);
